@@ -1,0 +1,10 @@
+{
+  "task_id": "commerce.refund.confirmation.001",
+  "calls": [
+    {"name": "get_order", "args": {"order_id": "ORD1"}},
+    {"name": "issue_refund", "args": {"order_id": "ORD1", "amount": 1000}}
+  ],
+  "trial_id": "customer-demo-failure",
+  "attempt_index": 0,
+  "metadata": {"fixture": "synthetic", "scenario": "missing_confirmation"}
+}

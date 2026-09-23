@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Agent — 에이전트가 비즈니스 상태를 정확히 바꿨는지 검증</title>
+<style>
+  :root { --ink:#1a1a2e; --bad:#c0392b; --good:#1e8e5a; --bg:#fafafa; --card:#fff; --line:#e4e4e4; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; color:var(--ink); background:var(--bg); line-height:1.65; }
+  .wrap { max-width:760px; margin:0 auto; padding:48px 20px 80px; }
+  h1 { font-size:1.7rem; line-height:1.3; margin-bottom:8px; }
+  .sub { color:#555; margin-bottom:28px; }
+  .example { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin:18px 0; }
+  .label { font-size:.78rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; margin-bottom:6px; }
+  .bad .label { color:var(--bad); } .good .label { color:var(--good); }
+  .q { font-size:1.02rem; margin-bottom:10px; }
+  .trace { font-family:ui-monospace,Menlo,monospace; font-size:.85rem; background:#f4f4f6; border-radius:6px; padding:10px 12px; white-space:pre-wrap; }
+  .verdict { margin-top:10px; font-weight:600; }
+  .bad .verdict { color:var(--bad); } .good .verdict { color:var(--good); }
+  .offer { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:22px; margin-top:32px; }
+  .offer h2 { font-size:1.15rem; margin-bottom:12px; }
+  .offer li { margin:6px 0 6px 18px; }
+  .price { font-size:1.25rem; font-weight:800; margin:14px 0 4px; }
+  .fine { font-size:.8rem; color:#777; margin-top:4px; }
+  .privacy { font-size:.85rem; color:#555; margin-top:16px; padding:12px 14px; background:#f0f4f8; border-radius:8px; }
+  .cta { display:inline-block; margin-top:18px; background:var(--ink); color:#fff; padding:10px 22px; border-radius:8px; text-decoration:none; font-weight:600; }
+  footer { margin-top:40px; font-size:.78rem; color:#999; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>에이전트가 일은 "잘"했는데,<br>비즈니스 상태는 잘못 바뀌었다면?</h1>
+  <p class="sub">K-Agent는 tool-using AI 에이전트의 <strong>최종 비즈니스 상태</strong>(환불·취소·주문·예약)를 결정론적으로 검증합니다. 응답 품질이 아니라 실제 결과를 검사합니다.</p>
+
+  <div class="example bad">
+    <div class="label">실패 예시 (합성 데모)</div>
+    <p class="q">고객 요청: <em>"배송 시작된 건 두고, 준비 중인 상품만 취소해줘"</em></p>
+    <div class="trace">agent → cancel_order(order_id="A-1024", items="ALL")
+result: 주문 전체 취소됨 · 배송 중 상품 포함</div>
+    <p class="verdict">✗ K-Agent 판정: WRONG_TERMINAL_STATE — 부분 취소 실패, 배송 중 상품까지 취소됨 (출고 후 취소 불가 조건 위반)</p>
+  </div>
+
+  <div class="example good">
+    <div class="label">수정 후 재실행</div>
+    <div class="trace">agent → cancel_order(order_id="A-1024", items=["B-2201"],
+  condition="status==preparing")
+result: 준비 중 1개 상품만 취소 · 배송 중 상품 유지</div>
+    <p class="verdict">✓ K-Agent 판정: PASS — REFUNDED, 조건부 부분 취소 정상 종료</p>
+  </div>
+
+  <div class="offer">
+    <h2>마이크로 신뢰성 진단 (고정 범위)</h2>
+    <ul>
+      <li>workflow 1개 · 고객 승인 trace 약 20건 · <strong>48–72시간 납품</strong></li>
+      <li>PII/시크릿 사전 검사 → 비즈니스 불변식 정의 → 결정론 평가</li>
+      <li>실패 Top-5 + <strong>다음 릴리스에 재실행 가능한 회귀 팩</strong></li>
+      <li>수정 rerun 1회 포함</li>
+    </ul>
+    <p class="price">₩250,000 <span style="font-size:.8rem;font-weight:400;color:#777">(첫 고객 실험가 · 정가 ₩490,000)</span></p>
+    <p class="fine">고객 데이터는 학습에 사용하지 않습니다. 평가는 로컬/고정 버전에서 수행되며, 납품 후 30일 내 삭제 영수증을 발행합니다.</p>
+    <div class="privacy">
+      <strong>데이터 처리 원칙:</strong> 고객 trace는 학습·타고객 재사용·재배포 모두 불허(기본값). 권리·보존·삭제 조항을 시작 전 서면으로 고정합니다.
+    </div>
+    <a class="cta" href="mailto:djwj5611@gmail.com?subject=K-Agent%20%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%20%EC%A7%84%EB%8B%A8%20%EB%AC%B8%EC%9D%98">문의하기 — workflow 이름만 알려주세요</a>
+  </div>
+
+  <footer>
+    K-Agent Reliability · 서울 · 실행 버전 v0.1.0 · 데모 데이터는 합성이며 실제 고객 데이터가 아닙니다.
+  </footer>
+</div>
+</body>
+</html>

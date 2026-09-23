@@ -1,0 +1,12 @@
+{
+  "task_id": "commerce.refund.confirmation.001",
+  "calls": [
+    {"name": "get_order", "args": {"order_id": "ORD1"}},
+    {"name": "confirm_action", "args": {"action": "issue_refund", "order_id": "ORD1", "amount": 1000}},
+    {"name": "issue_refund", "args": {"order_id": "ORD1", "amount": 1000}}
+  ],
+  "trial_id": "customer-demo-fixed",
+  "attempt_index": 1,
+  "confirmed": true,
+  "metadata": {"fixture": "synthetic", "scenario": "confirmed_rerun"}
+}
