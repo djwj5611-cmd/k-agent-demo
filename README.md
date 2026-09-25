@@ -1,4 +1,11 @@
-# K-Agent — Demo & Trust Surface
+
+
+## 문의 / Contact
+
+에이전트가 상태 변경 tool을 다루는 팀의 실패 사례를 찾습니다. 무료 미니 리뷰(10 trace 이하) 대상 팀은 문의 바랍니다.
+
+- 이메일: djwj5611@gmail.com
+- 진단 상품: Micro Reliability Check / Full Diagnostic (데모 페이지 가격표 참조)# K-Agent — Demo & Trust Surface
 
 > 공개 데모 전용 리포지토리입니다. 제품 소스 코드는 포함하지 않습니다.
 > 모든 예제는 **합성(synthetic) 데이터**이며 실제 고객 데이터가 아닙니다.
