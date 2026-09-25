@@ -12,12 +12,12 @@ K-Agent의 결정론적 평가기가 잡아내고, 수정 후 재실행(rerun)�
 - `trace-failure.json` — 합성 실패 trace (부분 취소 요청에 전체 취소 실행)
 - `trace-fixed.json` — 합성 수정 trace (조건부 부분 취소, REFUNDED 정상 종료)
 
-## 제공 서비스 (고정 범위)
+## 제공 서비스 (2단계 — 둘 다 실험가)
 
-**마이크로 Agent 신뢰성 진단** — workflow 1개, 고객 승인 trace 약 20건, 48–72시간,
-실패 Top-5 + 재실행 가능한 프라이빗 회귀 팩 + 수정 rerun 1회.
+1. **Micro Reliability Check — ₩190,000** · workflow 1개 · trace 10건 이하 · 핵심 failure 판정 3개 · 30분 결과 설명 콜 · rerun 없음
+2. **Agent Reliability Diagnostic — ₩490,000** · workflow 1개 · 고객 승인 trace 약 20건 · 48–72시간 · 실패 Top-5 + 재실행 가능한 프라이빗 회귀 팩 + 수정 rerun 1회
 
-가격은 문의 시 안내합니다. 고객 데이터는 학습·타고객 재사용·재배포 모두 불허(기본값)이며
+고객 데이터는 학습·타고객 재사용·재배포 모두 불허(기본값)이며
 처리는 로컬/고정 버전에서 수행하고 30일 내 삭제 영수증을 발행합니다.
 
 ## 문의
